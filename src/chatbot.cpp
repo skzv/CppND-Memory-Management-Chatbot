@@ -45,6 +45,82 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 
+// Copy constructor
+ChatBot::ChatBot(const ChatBot& source) {
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+
+    // Shallow copy
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+
+    // Deep copy
+    _image = new wxBitmap(*source._image);
+} 
+
+// Copy assignment
+ChatBot& ChatBot::operator=(const ChatBot& source){
+    std::cout << "ChatBot Copy Assignment" << std::endl;
+
+    // Self-assignment guard clause
+    if (this == &source)
+        return *this;
+    
+    // In case it's already holding something
+    delete _image;
+
+    // Shallow copy
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+
+    // Deep copy
+    _image =  new wxBitmap(*source._image);
+
+    // Return reference
+    return *this;
+} 
+
+// Move constructor
+ChatBot::ChatBot(ChatBot&& source){
+    std::cout << "ChatBot Move Constructor" << std::endl;
+
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+    _image = source._image;
+
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._image = nullptr;
+} 
+
+// Move assignment
+ChatBot& ChatBot::operator=(ChatBot&& source){
+    std::cout << "ChatBot Move Assignment" << std::endl;
+
+    // Self-assignment guard clause
+    if (this == &source)
+        return *this;
+    
+    // In case it's already holding something
+    delete _image;
+    
+    // Move all members
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+    _image = source._image;
+
+    // Invalidate members of source
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._image = nullptr;
+
+    // Return reference
+    return *this;
+}
+
 ////
 //// EOF STUDENT CODE
 
